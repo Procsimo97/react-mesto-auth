@@ -11,6 +11,11 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import DeleteCardPopup from './DeleteCardPopup';
 import ProctectedRoute from './ProtectedRoute';
+import { Route, Routes } from 'react-router-dom';
+import Login from './Login';
+import Register from './Register';
+import InfoTooltip from './InfoTooltip';
+import * as apiAuth from './Auth';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -124,6 +129,20 @@ function App() {
     .catch((err) => console.log(`Ошибка создания карточки ${err}`))
     .finally(() => setIsloading(false))
   }
+  /* регистрация и присвоение данных пользователю */
+  function onRegister(dataRegister) {
+    apiAuth.register(dataRegister).then((data) => {
+      setCurrentUser(data.user);
+      console.log("register", data);
+    })
+  }
+
+  function onLogin(dataLogin) {
+    apiAuth.login(dataLogin).then((data)=> {
+      setCurrentUser(data.user);
+      console.log("login", data);
+    })
+  }
 
   /*получение карточек с сервера*/
   useEffect(() => {
@@ -175,57 +194,84 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <ProctectedRoute path="/" isLoggenedIn={isLoggenedIn} element={
+
+      
       <div className="page">
-        <Header />
-        <Main onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          cards={cards}
-          onCardClick={handleImgPopupClick}
-          onDeleteClick={handleDeleteCardPopupClick}
-          onCardLike={handleCardLike}
+        <Routes>
+          <Route path="/sign-up" element={
+            <>
+              <Header title="Войти" route="/sign-in" />
+              <Login onLogin={onLogin}/>
+              <InfoTooltip 
+              onClose={closeAllPopup}
+              title="Что-то пошло не так! Попробуйте ещё раз."
+            /> 
+            </>
+          } />
 
-        />
-        <Footer />
+          <Route path='/sign-in' element={
+            <>
+              <Header title="Регистрация" route="/sign-up"/>
+              <Register onRegister={onRegister}/>
+            </>
+          } />
+          
+          <Route path='/' element={
+          <>
+            <Header />
+            <ProctectedRoute path="/" isLoggenedIn={isLoggenedIn} element={
+              <>
+              <Main onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                cards={cards}
+                onCardClick={handleImgPopupClick}
+                onDeleteClick={handleDeleteCardPopupClick}
+                onCardLike={handleCardLike}
+              />
+              <Footer />
+       
         
-        <EditProfilePopup isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopup}
-          onUpdateUser={handleUpdateUser}
-          isLoading={isLoading}
-          onButton={handleSubmitButtonChange}
+              <AddPlacePopup isOpen={isAddPlacePopupOpen}
+                onClose={closeAllPopup}
+                onAddPlace={handleAddPlace}
+                isLoading={isLoading}
+                onButton={handleSubmitButtonChange} />
+
+              <EditAvatarPopup isOpen={isEditAvatarPopupOpen}
+                onClose={closeAllPopup}
+                onUpdateAvatar={handleUpdateAvatar}
+                isLoading={isLoading}
+                onButton={handleSubmitButtonChange}
+              />
+
+              <DeleteCardPopup isOpen={isDeleteCardPopupOpen}
+                onClose={closeAllPopup}
+                onCardDelete={handleCardDelete} 
+                card={cardDelete}
+                onCardClick={handleDeleteCardPopupClick}
+                isLoading={isLoading}
+                onButton={handleSubmitButtonChange}
+              />
+
+            <ImagePopup name={"image"}
+              card={selectCard}
+              onClose={closeAllPopup}
+            />
+
+           
+          </>
+           } />
+          </> 
+          }
           />
-        
-        <AddPlacePopup isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopup}
-          onAddPlace={handleAddPlace}
-          isLoading={isLoading}
-          onButton={handleSubmitButtonChange} />
 
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopup}
-          onUpdateAvatar={handleUpdateAvatar}
-          isLoading={isLoading}
-          onButton={handleSubmitButtonChange}
-        />
-
-        <DeleteCardPopup isOpen={isDeleteCardPopupOpen}
-          onClose={closeAllPopup}
-          onCardDelete={handleCardDelete} 
-          card={cardDelete}
-          onCardClick={handleDeleteCardPopupClick}
-          isLoading={isLoading}
-          onButton={handleSubmitButtonChange}
-       />
-
-        <ImagePopup name={"image"}
-          card={selectCard}
-          onClose={closeAllPopup}
-        />
-        <script type="module" src="./index.js"></script>
-
+           </Routes>
       </div>
-      } />
+      
+         <script type="module" src="./index.js"></script> 
+     
+       
     </CurrentUserContext.Provider>
   );
 }
