@@ -130,17 +130,18 @@ function App() {
     .finally(() => setIsloading(false))
   }
   /* регистрация и присвоение данных пользователю */
-  function onRegister(dataRegister) {
+  const handleRegister = (dataRegister) => {
     apiAuth.register(dataRegister).then((data) => {
       setCurrentUser(data.user);
       console.log("register", data);
     })
+    .catch(err => console.log(`Ошибка регистрации пользователя ${err}`))
   }
 
-  function onLogin(dataLogin) {
+  function handleLogin(dataLogin) {
     apiAuth.login(dataLogin).then((data)=> {
-      setCurrentUser(data.user);
-      console.log("login", data);
+    /*   setCurrentUser(data.user); */
+      console.log(data);
     })
   }
 
@@ -200,25 +201,21 @@ function App() {
         <Routes>
           <Route path="/sign-up" element={
             <>
-              <Header title="Войти" route="/sign-in" />
-              <Login onLogin={onLogin}/>
-              <InfoTooltip 
-              onClose={closeAllPopup}
-              title="Что-то пошло не так! Попробуйте ещё раз."
-            /> 
+            <Header title="Регистрация" route="/sign-in"/>
+              <Login onLogin={handleLogin}/>
             </>
           } />
 
           <Route path='/sign-in' element={
             <>
-              <Header title="Регистрация" route="/sign-up"/>
-              <Register onRegister={onRegister}/>
+              <Header title="Вход" route="/sign-up" />
+              <Register onRegister={handleRegister}/>
             </>
           } />
           
           <Route path='/' element={
           <>
-            <Header />
+            <Header title="Выйти" route="/sign-in" />
             <ProctectedRoute path="/" isLoggenedIn={isLoggenedIn} element={
               <>
               <Main onEditProfile={handleEditProfileClick}
@@ -230,7 +227,9 @@ function App() {
                 onCardLike={handleCardLike}
               />
               <Footer />
-       
+              </>
+            } />
+            
         
               <AddPlacePopup isOpen={isAddPlacePopupOpen}
                 onClose={closeAllPopup}
@@ -258,10 +257,11 @@ function App() {
               card={selectCard}
               onClose={closeAllPopup}
             />
-
-           
-          </>
-           } />
+          
+          <InfoTooltip 
+              onClose={closeAllPopup}
+              title="Что-то пошло не так! Попробуйте ещё раз."
+            /> 
           </> 
           }
           />

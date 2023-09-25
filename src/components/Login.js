@@ -1,14 +1,27 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import AuthForm from "./AuthForm";
 
-function Login() {
-  return (
-    <AuthForm title={"Регистрация"} 
-              button={"Зарегистрироваться"}>
-                <p className="auth-form__text">Уже зарегистрированы?
-                  <Link to="/sign-in" className="auth-form__link">Войти</Link>
-                </p>
-    </AuthForm>
-  )
+
+function Login(props) {
+
+  const [formValue, setFormValue] = useState({
+    email: '',
+    password: ''
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.onLogin(formValue);
+
+  }
+
+    return (
+      <AuthForm title={"Вход"} 
+                button={"Войти"}
+                onSubmit={handleSubmit}
+                >
+                
+      </AuthForm>
+    )
 }
 export default Login;

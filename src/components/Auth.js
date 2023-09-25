@@ -5,11 +5,13 @@ export function register(email, password) {
     {
         method: 'POST',
         headers: {
+            'Accept' : 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({email, password})
-        .then(res => res.json())
     })   
+        .then(res => res.json())
+    
 }
 
 export function login(email, password) {
@@ -17,9 +19,30 @@ export function login(email, password) {
     {
         method: 'POST',
         headers: {
+            'Accept' : 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({email, password})
+    })
         .then(res => res.json())
+        .then((data) => {
+            if(data.jwt) {
+              localStorage.setItem('jwt', data.jwt);
+              return data;
+            }
+        
     })   
+}
+
+export const getContent = (token) => {
+    return fetch(`${BASE_URL}/users/me`, 
+    {
+        method: 'GET',
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type': 'application/json',
+            'Autorization' : `Bearer ${token}`
+        },
+    })
+    .then(res => res.json())
 }
