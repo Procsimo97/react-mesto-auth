@@ -11,13 +11,14 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import DeleteCardPopup from './DeleteCardPopup';
 import ProctectedRoute from './ProtectedRoute';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
-import * as apiAuth from './Auth';
+import apiAuth from '../utils/AuthApi';
 
 function App() {
+  const navigate = useNavigate();
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -129,20 +130,27 @@ function App() {
     .catch((err) => console.log(`Ошибка создания карточки ${err}`))
     .finally(() => setIsloading(false))
   }
+
   /* регистрация и присвоение данных пользователю */
   const handleRegister = (dataRegister) => {
-    apiAuth.register(dataRegister).then((data) => {
-      setCurrentUser(data.user);
-      console.log("register", data);
+    apiAuth.register(dataRegister).then((dataUser) => {
+      
+      setCurrentUser(dataUser.user);
+      navigate("/sign-in");
+      console.log("REGISTER", dataUser);
     })
     .catch(err => console.log(`Ошибка регистрации пользователя ${err}`))
   }
 
   function handleLogin(dataLogin) {
-    apiAuth.login(dataLogin).then((data)=> {
+    apiAuth.login(dataLogin).then((res) => {
+      localStorage.setItem("jwt", res.token)
     /*   setCurrentUser(data.user); */
-      console.log(data);
+    setIsLoggenedIn(true);
+    navigate("/");
+      console.log(res);
     })
+    .catch(err => console.log(`Ошибка авторизации пользователя ${err}`))
   }
 
   /*получение карточек с сервера*/
@@ -199,16 +207,16 @@ function App() {
       
       <div className="page">
         <Routes>
-          <Route path="/sign-up" element={
+          <Route path="/sign-in" element={
             <>
-            <Header title="Регистрация" route="/sign-in"/>
+            <Header title="Регистрация" route="/sign-up"/>
               <Login onLogin={handleLogin}/>
             </>
           } />
 
-          <Route path='/sign-in' element={
+          <Route path='/sign-up' element={
             <>
-              <Header title="Вход" route="/sign-up" />
+              <Header title="Вход" route="/sign-in" />
               <Register onRegister={handleRegister}/>
             </>
           } />
