@@ -14,7 +14,7 @@ class AuthApi{
     }
 
     register({email, password}) {
-        return fetch(`${this.baseUrl}/sign-up`, 
+          return fetch(`${this.baseUrl}/sign-up`, 
         {
             method: 'POST',
             headers: this.headers,

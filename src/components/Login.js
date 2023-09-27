@@ -15,10 +15,20 @@ function Login(props) {
 
   }
 
+  const handleChange =(e) => {
+    const {name, value} = e.target;
+    setFormValue({
+      ...formValue,
+      [name] : value
+    });
+  }
+
+
     return (
       <AuthForm title={"Вход"} 
                 button={"Войти"}
                 onSubmit={handleSubmit}
+                onChange={handleChange}
                 >
                 
       </AuthForm>

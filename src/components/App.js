@@ -132,12 +132,11 @@ function App() {
   }
 
   /* регистрация и присвоение данных пользователю */
-  const handleRegister = (dataRegister) => {
-    apiAuth.register(dataRegister).then((dataUser) => {
-      
-      setCurrentUser(dataUser.user);
-      navigate("/sign-in");
-      console.log("REGISTER", dataUser);
+  function handleRegister(dataRegister) {
+    apiAuth.register(dataRegister).then((res) => {
+     /*  setCurrentUser(dataUser.user);
+      navigate("/sign-in"); */
+      console.log("REGISTER", res);
     })
     .catch(err => console.log(`Ошибка регистрации пользователя ${err}`))
   }
@@ -217,7 +216,7 @@ function App() {
           <Route path='/sign-up' element={
             <>
               <Header title="Вход" route="/sign-in" />
-              <Register onRegister={handleRegister}/>
+              <Register onRegister={handleRegister} />
             </>
           } />
           

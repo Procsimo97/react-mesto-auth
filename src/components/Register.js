@@ -5,8 +5,8 @@ import AuthForm from "./AuthForm";
 function Register({onRegister}) {
 
   const [formValue, setFormValue] = useState({
-    email: '1',
-    password: '1'
+    email: '',
+    password: ''
   })
 
   const handleChange =(e) => {
@@ -20,9 +20,9 @@ function Register({onRegister}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const {email, password} = formValue;
-    if (!email || !password) {
+   /*  if (!email || !password) {
       return;
-    }
+    } */
     console.log(formValue);
     onRegister(formValue);
 
