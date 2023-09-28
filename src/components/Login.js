@@ -2,7 +2,7 @@ import { useState } from "react";
 import AuthForm from "./AuthForm";
 
 
-function Login(props) {
+function Login({onLogin}) {
 
   const [formValue, setFormValue] = useState({
     email: '',
@@ -11,7 +11,7 @@ function Login(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onLogin(formValue);
+    onLogin(formValue);
 
   }
 

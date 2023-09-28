@@ -19,13 +19,7 @@ function Register({onRegister}) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const {email, password} = formValue;
-   /*  if (!email || !password) {
-      return;
-    } */
-    console.log(formValue);
     onRegister(formValue);
-
   }
 
   return (

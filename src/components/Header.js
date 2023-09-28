@@ -5,7 +5,11 @@ function Header(props) {
     return (
       <header className="header">
         <img className="header__logo" src={logo} alt="логотип место"/>
-        <Link to={props.route} className="header__link">{props.title}</Link>
+        <div className="header__container">
+          <p className="header__email">{props.email}</p>
+          <Link to={props.route} onClick={props.onClick} className="header__link">{props.title}</Link>
+        </div>
+        
       </header>
     )
 }

@@ -1,4 +1,5 @@
 .popup__info {
+    position: relative;
     display: flex;
     flex-direction: column;
     margin: auto;

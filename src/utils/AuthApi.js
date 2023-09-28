@@ -6,7 +6,6 @@ class AuthApi{
 
     _validateQuerry(res) {
         if(res.ok){
-            console.log(res);
             return res.json();
         } else {
             return Promise.reject(`Ошибка: ${res.status}`)
@@ -14,45 +13,45 @@ class AuthApi{
     }
 
     register({email, password}) {
-          return fetch(`${this.baseUrl}/sign-up`, 
+          return fetch(`${this.baseUrl}/signup`, 
         {
             method: 'POST',
             headers: this.headers,
             body: JSON.stringify({email, password})
         })   
-        .then((response) => {
-            console.log(response);
-            return response.json();
-        })
+        .then(this._validateQuerry.bind(this))
            
     }
 
     login({email, password}) {
-        return fetch(`${this.baseUrl}/sign-in`, 
+        return fetch(`${this.baseUrl}/signin`, 
         {
             method: 'POST',
             headers: this.headers,
             body: JSON.stringify({email, password})
         })
             .then(this._validateQuerry.bind(this))
-            .then((data) => {
-                if(data.jwt) {
-                  localStorage.setItem('jwt', data.jwt);
-                  return data;
+            .then((res) => {
+                if(res.token) {
+                  localStorage.setItem('jwt', res.token);
+                  return res;
+                } else {
+                    return;
                 }
             
         })   
     }
     
-    getContent = (token) => {
+    getContent(token) {
         return fetch(`${this.baseUrl}/users/me`, 
         {
             method: 'GET',
-            headers: {...this.headers,
-                'Autorization' : `Bearer ${token}`
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
         })
-        .then(this._validateQuerry.bind(this))
+        .then(this._validateQuerry);
     }
 }
 
