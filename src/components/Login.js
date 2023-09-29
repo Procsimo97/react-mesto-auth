@@ -29,9 +29,8 @@ function Login({onLogin}) {
                 button={"Войти"}
                 onSubmit={handleSubmit}
                 onChange={handleChange}
-                >
-                
-      </AuthForm>
+                value={formValue}
+      />
     )
 }
 export default Login;

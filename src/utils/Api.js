@@ -4,7 +4,7 @@ class Api {
       this.headers = options.headers;
     }
     //метод вывода запроса
-    _validateQuerry(res) {
+    _validateQuery(res) {
       if(res.ok) {
         return res.json();
       } else {
@@ -16,10 +16,10 @@ class Api {
       return fetch(`${this.baseUrl}/users/me`, {
         headers: this.headers,
       })
-      .then(this._validateQuerry.bind(this))
+      .then(this._validateQuery.bind(this))
     }
     //изменение информации пользователя
-    setUserInfoApi(data) {
+    setUserInfo(data) {
       return fetch(`${this.baseUrl}/users/me`, {
         method: 'PATCH',
         headers: this.headers,
@@ -28,7 +28,7 @@ class Api {
           about: data.about
       })
     })
-      .then(this._validateQuerry.bind(this))
+      .then(this._validateQuery.bind(this))
     }
 
     //получение карточек с сервера
@@ -36,7 +36,7 @@ class Api {
       return fetch(`${this.baseUrl}/cards`, {
         headers: this.headers
       })
-      .then(this._validateQuerry.bind(this))
+      .then(this._validateQuery.bind(this))
     }
     
     //добавление новой карточки
@@ -49,7 +49,7 @@ class Api {
         }),
         headers: this.headers
       })
-      .then(this._validateQuerry.bind(this));
+      .then(this._validateQuery.bind(this));
     }
 
     //удаление карточки
@@ -58,7 +58,7 @@ class Api {
         method: 'DELETE', 
         headers: this.headers,
       })
-      .then(this._validateQuerry.bind(this))
+      .then(this._validateQuery.bind(this))
     }
 
     likeCard(card) {
@@ -66,7 +66,7 @@ class Api {
         method: 'PUT',
         headers: this.headers
       })
-      .then(this._validateQuerry.bind(this));
+      .then(this._validateQuery.bind(this));
     }
 
     dislikeCard(card) {
@@ -74,7 +74,7 @@ class Api {
         method: 'DELETE',
         headers: this.headers
       })
-      .then(this._validateQuerry.bind(this));
+      .then(this._validateQuery.bind(this));
     }
 
     //смена аватара
@@ -87,7 +87,7 @@ class Api {
         
       headers: this.headers
     })
-    .then(this._validateQuerry.bind(this));
+    .then(this._validateQuery.bind(this));
   }
 }
 

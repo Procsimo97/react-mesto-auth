@@ -26,7 +26,8 @@ function Register({onRegister}) {
     <AuthForm title={"Регистрация"} 
               button={"Зарегистрироваться"}
               onChange={handleChange}
-              onSubmit={handleSubmit}>
+              onSubmit={handleSubmit}
+              value={formValue}>
                 <p className="auth-form__text">Уже зарегистрированы?
                   <Link to="/sign-in" className="auth-form__link">Войти</Link>
                 </p>

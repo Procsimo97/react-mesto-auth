@@ -4,7 +4,7 @@ class AuthApi{
         this.headers = options.headers;
     }
 
-    _validateQuerry(res) {
+    _validateQuery(res) {
         if(res.ok){
             return res.json();
         } else {
@@ -19,7 +19,7 @@ class AuthApi{
             headers: this.headers,
             body: JSON.stringify({email, password})
         })   
-        .then(this._validateQuerry.bind(this))
+        .then(this._validateQuery.bind(this))
            
     }
 
@@ -30,7 +30,7 @@ class AuthApi{
             headers: this.headers,
             body: JSON.stringify({email, password})
         })
-            .then(this._validateQuerry.bind(this))
+            .then(this._validateQuery.bind(this))
             .then((res) => {
                 if(res.token) {
                   localStorage.setItem('jwt', res.token);
@@ -42,7 +42,7 @@ class AuthApi{
         })   
     }
     
-    getContent(token) {
+    checkToken(token) {
         return fetch(`${this.baseUrl}/users/me`, 
         {
             method: 'GET',
@@ -51,16 +51,16 @@ class AuthApi{
                 'Authorization': `Bearer ${token}`,
             },
         })
-        .then(this._validateQuerry);
+        .then(this._validateQuery);
     }
 }
 
- const apiAuth = new AuthApi({
-    baseUrl: 'https://auth.nomoreparties.co',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
- })
+const apiAuth = new AuthApi({
+   baseUrl: 'https://auth.nomoreparties.co',
+   headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json'
+   }
+})
 
  export default apiAuth;

@@ -8,7 +8,7 @@ function Card(props) {
     const isLiked = props.card.likes.some(i => i._id === currentUser._id);
 
     const cardLikeButtonClassName = (
-        `photos__like ${isLiked && 'photos__like_active'}`
+        `photos__like ${isLiked ? 'photos__like_active' : ''}`
     );
 
     function handleClick() {
@@ -24,15 +24,15 @@ function Card(props) {
     }
 
     return (
-        <div id="photo-template">
+        <div className="photo-template">
             <article className="photos__box">
                 {isOwn && <button type="button" className="photos__delete" onClick={handleDeleteClick} />}
-                <img className="photos__element" src={props.link} alt={props.name} onClick={handleClick} />
+                <img className="photos__element" src={props.card.link} alt={props.card.name} onClick={handleClick} />
                 <div className="photos__info">
-                    <h2 className="photos__name">{props.name}</h2>
+                    <h2 className="photos__name">{props.card.name}</h2>
                     <div className="photos__likes">
                         <button type="button" className={cardLikeButtonClassName} onClick={handleLike}></button>
-                        <p className="photos__like-score">{props.likes}</p>
+                        <p className="photos__like-score">{props.card.likes.length}</p>
                     </div>
                 </div>
             </article>

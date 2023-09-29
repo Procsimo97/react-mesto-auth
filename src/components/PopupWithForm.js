@@ -7,7 +7,7 @@ function PopupWithForm(props) {
                 <button type="button" className={`link popup__exit popup__exit_type_${props.name}`} onClick={props.onClose} ></button>
                 <form className={`popup__form popup__form_type_${props.name}`} name={`popupForm-${props.name}`} onSubmit={props.onSubmit}>
                     {props.children}
-                <button type="submit" className={`link popup__save-btn popup__save-btn_type_${props.name}`}>{props.button}</button>
+                    <button type="submit" className={`link popup__save-btn popup__save-btn_type_${props.name}`}>{props.button}</button>
                 </form>
             </div>
         </div>
