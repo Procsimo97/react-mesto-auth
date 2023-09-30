@@ -24,8 +24,9 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
-  const [isInfoTooltip, setIsInfoTooltip] = useState(false);
-  const isSomePopupOpen = (isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen || isDeleteCardPopupOpen || isInfoTooltip);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isImgPopupOpen, setIsImgPopupOpen] = useState(false);
+  const isSomePopupOpen = (isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen || isDeleteCardPopupOpen || isInfoTooltipOpen || isImgPopupOpen);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSuccessInfoTooltipStatus, setIsSuccessInfoTooltipStatus] = useState(false);
@@ -60,6 +61,7 @@ function App() {
 
   function handleImgPopupClick(card) {
     setSelectedCard(card);
+    setIsImgPopupOpen(true);
   }
 
   function closeAllPopup() {
@@ -67,8 +69,8 @@ function App() {
     setIsAddPlacePopupOpen(false)
     setIsEditAvatarPopupOpen(false);
     setIsDeleteCardPopupOpen(false);
-    setIsInfoTooltip(false);
-    setSelectedCard(null);
+    setIsInfoTooltipOpen(false);
+    setIsImgPopupOpen(false);
   }
 
   /*лайк/дизлайк */
@@ -95,8 +97,8 @@ function App() {
   /*функция удаления карточки */
   function handleCardDelete(card) {
     const isOwn = card.owner._id === currentUser._id;
-    setIsDeleteCardLoading(true);
     if (!isOwn) return;
+    setIsDeleteCardLoading(true);
     api.deleteCard(card._id)
       .then(() => {
         setCards((cards) => { return cards.filter((c) => c._id !== card._id) })
@@ -148,13 +150,13 @@ function App() {
       .then((res) => {
         if (res) {
           navigate("/sign-in");
-          setIsInfoTooltip(true);
+          setIsInfoTooltipOpen(true);
           setIsSuccessInfoTooltipStatus(true);
         }
       })
       .catch(err => {
         console.log(`Ошибка регистрации пользователя ${err}`);
-        setIsInfoTooltip(true);
+        setIsInfoTooltipOpen(true);
         setIsSuccessInfoTooltipStatus(false);
       })
   }
@@ -168,7 +170,7 @@ function App() {
     })
       .catch(err => {
         console.log(`Ошибка авторизации пользователя ${err}`)
-        setIsInfoTooltip(true);
+        setIsInfoTooltipOpen(true);
         setIsSuccessInfoTooltipStatus(false);
       })
   }
@@ -327,6 +329,7 @@ function App() {
               <ImagePopup name={"image"}
                 card={selectedCard}
                 onClose={closeAllPopup}
+                isOpen={isImgPopupOpen}
               />
 
             </>
@@ -335,7 +338,7 @@ function App() {
 
         </Routes>
 
-        <InfoTooltip isOpen={isInfoTooltip}
+        <InfoTooltip isOpen={isInfoTooltipOpen}
           isSuccess={isSuccessInfoTooltipStatus}
           onClose={closeAllPopup}
         />
